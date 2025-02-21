@@ -87,7 +87,7 @@ const TopSongs = ({ artistId }) => {
                 <Text
                   numberOfLines={1}
                   style={{
-                    color: "white",
+                    color: "gray",
                     fontSize: 12,
                     width: 200,
                   }}
