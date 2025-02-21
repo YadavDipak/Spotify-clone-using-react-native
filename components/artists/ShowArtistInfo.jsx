@@ -1,11 +1,12 @@
-import { View, Text, Pressable } from "react-native";
 import React, { useState } from "react";
+import { View, Text, Pressable } from "react-native";
+
 import TopSongs from "./TopSongs";
 import ShowArtistAlbum from "./ShowArtistAlbum";
 
 const ShowArtistInfo = ({ artistId }) => {
-  const [selected, setSelected] = useState("Top songs");
-  const filters = ["Top songs", "Albums"];
+  const [selected, setSelected] = useState("Top Songs");
+  const filters = ["Top Songs", "Albums"];
 
   return (
     <View style={{ paddingBottom: 80 }}>
@@ -28,7 +29,6 @@ const ShowArtistInfo = ({ artistId }) => {
                 <View
                   style={{
                     marginTop: 9,
-                    width: "auto",
                     height: 2,
                     backgroundColor: "green",
                   }}
@@ -39,7 +39,7 @@ const ShowArtistInfo = ({ artistId }) => {
         })}
       </View>
 
-      {selected === "Top songs" && <TopSongs artistId={artistId} />}
+      {selected === "Top Songs" && <TopSongs artistId={artistId} />}
       {selected === "Albums" && <ShowArtistAlbum artistId={artistId} />}
     </View>
   );
