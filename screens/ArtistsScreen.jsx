@@ -18,12 +18,12 @@ const ArtistsScreen = () => {
   const route = useRoute();
   const artist = route.params?.artist;
 
-  if (!artist) return null; // Handle undefined artist case
+  if (!artist) return null;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
       {/* Back Button */}
-      <View style={{ position: "absolute", top: 20, left: 10, zIndex: 10 }}>
+      <View style={{ position: "absolute", top: 35, left: 10, zIndex: 10 }}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={{
@@ -38,8 +38,8 @@ const ArtistsScreen = () => {
 
       {/* Use FlatList instead of ScrollView */}
       <FlatList
-        data={[]} // Empty array since no direct list rendering
-        keyExtractor={() => "dummy"} // Avoid key warning
+        data={[]}
+        keyExtractor={() => "Random Artist"}
         ListHeaderComponent={
           <>
             <Image
@@ -51,6 +51,7 @@ const ArtistsScreen = () => {
               source={{ uri: artist.images[0]?.url }}
             />
             <Text
+              numberOfLines={1}
               style={{
                 position: "absolute",
                 color: "white",
