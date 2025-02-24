@@ -17,20 +17,20 @@ const Albums = ({ albums }) => {
               item: item,
             });
           }}
-          style={{
-            width: "100%",
-          }}
         >
           <View
             style={{
+              marginTop: 8,
               marginBottom: 8,
               flexDirection: "row",
               alignItems: "center",
-              gap: 15,
-              marginHorizontal: 8,
+              gap: 10,
               borderRadius: 8,
               padding: 5,
               backgroundColor: "#1c1c1e",
+              width: "95%",
+              alignItems: "center",
+              alignSelf: "center",
             }}
           >
             <Image
@@ -59,7 +59,6 @@ const Albums = ({ albums }) => {
                   color: "gray",
                   fontSize: 14,
                   paddingLeft: 8,
-                  width: 250,
                 }}
               >
                 {item?.artists.length > 0 &&
