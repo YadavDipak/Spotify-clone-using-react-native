@@ -1,3 +1,4 @@
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -6,12 +7,14 @@ import {
   Pressable,
   BackHandler,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import TopTracks from "../components/TopTracks";
+
 import { getCategorizedResult } from "../services/search";
+
+import TopTracks from "../components/TopTracks";
 import ShowSearchResults from "../components/search/ShowSearchResults";
 
 const SearchScreen = () => {
