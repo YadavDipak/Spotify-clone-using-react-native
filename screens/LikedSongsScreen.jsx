@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,9 +9,10 @@ import {
   ActivityIndicator,
   FlatList,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
+
 import {
   AntDesign,
   MaterialCommunityIcons,
@@ -97,7 +99,6 @@ const LikedSongsScreen = () => {
                 style={{
                   fontWeight: "500",
                   color: "white",
-                  height: "45px",
                 }}
               />
             </Pressable>
@@ -191,4 +192,5 @@ const LikedSongsScreen = () => {
     </>
   );
 };
+
 export default LikedSongsScreen;
