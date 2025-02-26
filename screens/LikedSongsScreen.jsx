@@ -23,7 +23,10 @@ import {
 import { getLikedTracks } from "../services/user";
 import SongItem from "../components/SongItem";
 
+import { useTranslation } from "react-i18next";
+
 const LikedSongsScreen = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const [input, setInput] = useState("");
   const [likedTracks, savedLikedTracks] = useState([]);
@@ -92,9 +95,10 @@ const LikedSongsScreen = () => {
               {/* Search Input Container */}
               <AntDesign name="search1" size={20} color="white" />
               <TextInput
+                numberOfLines={1}
                 value={input}
                 onChangeText={handleInputChange}
-                placeholder="Find in Liked songs"
+                placeholder={t("Find in Liked songs")}
                 placeholderTextColor="white"
                 style={{
                   fontWeight: "500",
@@ -111,16 +115,16 @@ const LikedSongsScreen = () => {
                 height: 40,
               }}
             >
-              <Text style={{ color: "white" }}>Sort</Text>
+              <Text style={{ color: "white" }}>{t("Sort")}</Text>
             </Pressable>
           </Pressable>
           <View style={{ height: 50 }} />
           <View style={{ marginHorizontal: 10 }}>
             <Text style={{ fontSize: 18, fontWeight: "bold", color: "white" }}>
-              Liked Songs
+              {t("Liked Songs")}
             </Text>
             <Text style={{ color: "white", fontSize: 13, marginTop: 5 }}>
-              {likedTracks.length} songs
+              {likedTracks.length} {t("songs")}
             </Text>
           </View>
           {/* Icons */}

@@ -8,7 +8,11 @@ import { useNavigation } from "@react-navigation/native";
 import { FollowedPlaylistContext } from "../../context/FollowedPlaylistContext";
 import { followPlaylist, unfollowPlaylist } from "../../services/playlist";
 
+import { useTranslation } from "react-i18next";
+
 const Playlists = ({ playlists }) => {
+  const { t } = useTranslation();
+
   const navigation = useNavigation();
 
   const { followedPlaylists, setFollowedPlaylists } = useContext(
@@ -100,7 +104,7 @@ const Playlists = ({ playlists }) => {
                     paddingLeft: 8,
                   }}
                 >
-                  Playlist
+                  {t("Playlist")}
                 </Text>
               </View>
               <MaterialIcons
@@ -130,7 +134,7 @@ const Playlists = ({ playlists }) => {
           }}
         >
           <Text style={{ color: "white", fontSize: 18, fontWeight: "600" }}>
-            No Playlists Found
+            {t("No Playlists Found")}
           </Text>
         </View>
       }

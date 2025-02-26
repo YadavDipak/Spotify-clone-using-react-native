@@ -5,8 +5,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
+import { useTranslation } from "react-i18next";
+
 const ArtistPlaylist = ({ playlists, artists, activeCategory }) => {
   const navigation = useNavigation();
+
+  const { t } = useTranslation();
   let combinedList = getCombinedList(playlists, artists, activeCategory);
 
   return (
@@ -64,7 +68,7 @@ const ArtistPlaylist = ({ playlists, artists, activeCategory }) => {
                   color: "#b3b3b3",
                 }}
               >
-                {item.type[0].toUpperCase() + item.type.slice(1)}
+                {t(item.type[0].toUpperCase() + item.type.slice(1))}
               </Text>
             </View>
           </Pressable>
@@ -103,9 +107,11 @@ const ArtistPlaylist = ({ playlists, artists, activeCategory }) => {
                 <Text
                   style={{ color: "white", fontSize: 14, fontWeight: "bold" }}
                 >
-                  Liked Songs
+                  {t("Liked Songs")}
                 </Text>
-                <Text style={{ color: "#B3B3B3", fontSize: 14 }}>Playlist</Text>
+                <Text style={{ color: "#B3B3B3", fontSize: 14 }}>
+                  {t("Playlist")}
+                </Text>
               </View>
             </Pressable>
           )
@@ -120,7 +126,7 @@ const ArtistPlaylist = ({ playlists, artists, activeCategory }) => {
             }}
           >
             <Text style={{ color: "white", fontSize: 24, fontWeight: "bold" }}>
-              No items found
+              {t("No items found")}
             </Text>
           </View>
         }

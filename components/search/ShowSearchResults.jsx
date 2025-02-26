@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, Pressable } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import Tracks from "./Tracks";
 import Artists from "./Artists";
@@ -7,10 +8,16 @@ import Albums from "./Albums";
 import Playlists from "./Playlists";
 
 const ShowSearchResults = ({ searchResults }) => {
-  const [selected, setSelected] = useState("Tracks");
-  const filters = ["Tracks", "Artists", "Albums", "Playlists"];
+  const { t } = useTranslation();
 
-  console.log("Printing the searchResult ------------", searchResults);
+  const filters = [
+    { key: "tracks", label: t("Tracks") },
+    { key: "artists", label: t("Artists") },
+    { key: "albums", label: t("Albums") },
+    { key: "playlists", label: t("Playlists") },
+  ];
+
+  const [selected, setSelected] = useState("tracks");
 
   return (
     <>
@@ -22,42 +29,39 @@ const ShowSearchResults = ({ searchResults }) => {
               justifyContent: "space-between",
               paddingTop: 10,
               paddingBottom: 8,
+              width: 150,
             }}
           >
-            {filters.map((filter) => {
-              return (
-                <Pressable
-                  key={filter}
-                  onPress={() => setSelected(filter)}
-                  style={{
-                    backgroundColor:
-                      selected === filter ? "#309635" : "#282828",
-                    padding: 8,
-                    borderRadius: 50,
-                  }}
+            {filters.map(({ key, label }) => (
+              <Pressable
+                key={key}
+                onPress={() => setSelected(key)}
+                style={{
+                  backgroundColor: selected === key ? "#309635" : "#282828",
+                  padding: 8,
+                  borderRadius: 50,
+                }}
+              >
+                <Text
+                  numberOfLines={1}
+                  style={{ color: "white", fontSize: 14 }}
                 >
-                  <Text
-                    style={{
-                      color: "white",
-                      fontSize: 16,
-                    }}
-                  >
-                    {filter}
-                  </Text>
-                </Pressable>
-              );
-            })}
+                  {label}
+                </Text>
+              </Pressable>
+            ))}
           </View>
-          {selected === "Tracks" && (
+
+          {selected === "tracks" && (
             <Tracks tracks={searchResults?.tracks?.items} />
           )}
-          {selected === "Albums" && (
+          {selected === "albums" && (
             <Albums albums={searchResults?.albums?.items} />
           )}
-          {selected === "Playlists" && (
+          {selected === "playlists" && (
             <Playlists playlists={searchResults?.playlists?.items} />
           )}
-          {selected === "Artists" && (
+          {selected === "artists" && (
             <Artists artists={searchResults?.artists?.items} />
           )}
         </View>

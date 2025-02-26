@@ -16,7 +16,11 @@ import { Entypo, Ionicons } from "@expo/vector-icons";
 import { reduceUniqueSongs } from "../utils/getUniqueSongs";
 import { getAlbumTracks } from "../services/album";
 
+import { useTranslation } from "react-i18next";
+
 const AlbumScreen = () => {
+  const { t } = useTranslation();
+
   const navigation = useNavigation();
   const route = useRoute();
   const { item } = route.params;
@@ -75,7 +79,7 @@ const AlbumScreen = () => {
 
         <View style={{ paddingHorizontal: 16 }}>
           <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
-            Album Hit {item.total_tracks} Songs
+            {t("Album Hit")} {item.total_tracks} {t("Songs")}
           </Text>
           <FlatList
             style={{ marginTop: 20 }}
@@ -125,7 +129,7 @@ const AlbumScreen = () => {
                 <Text
                   style={{ color: "white", fontSize: 18, fontWeight: "600" }}
                 >
-                  No Tracks Found
+                  {t("No Tracks Found")}
                 </Text>
               </View>
             }

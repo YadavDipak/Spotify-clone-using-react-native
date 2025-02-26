@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { View, Text, Pressable } from "react-native";
 
+import { useTranslation } from "react-i18next";
+
 import TopSongs from "./TopSongs";
 import ShowArtistAlbum from "./ShowArtistAlbum";
 
 const ShowArtistInfo = ({ artistId }) => {
+  const { t } = useTranslation();
   const [selected, setSelected] = useState("Top Songs");
-  const filters = ["Top Songs", "Albums"];
+  const filters = [t("Top Songs"), t("Albums")];
 
   return (
     <View style={{ paddingBottom: 80 }}>
@@ -39,8 +42,8 @@ const ShowArtistInfo = ({ artistId }) => {
         })}
       </View>
 
-      {selected === "Top Songs" && <TopSongs artistId={artistId} />}
-      {selected === "Albums" && <ShowArtistAlbum artistId={artistId} />}
+      {selected === t("Top Songs") && <TopSongs artistId={artistId} />}
+      {selected === t("Albums") && <ShowArtistAlbum artistId={artistId} />}
     </View>
   );
 };

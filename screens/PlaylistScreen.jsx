@@ -15,7 +15,11 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { FollowedPlaylistContext } from "../context/FollowedPlaylistContext";
 
+import { useTranslation } from "react-i18next";
+
 const PlaylistScreen = () => {
+  const { t } = useTranslation();
+
   const navigation = useNavigation();
   const route = useRoute();
   const { item } = route.params;
@@ -102,7 +106,7 @@ const PlaylistScreen = () => {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <Text style={{ color: "white", fontSize: 16, fontWeight: "600" }}>
-              {item.tracks.total} Songs
+              {item.tracks.total} {t("Songs")}
             </Text>
             {/* <MaterialIcons name="playlist-add-check" size={24} color="green" /> */}
             <MaterialIcons

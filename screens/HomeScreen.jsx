@@ -20,12 +20,24 @@ import TopArtists from "../components/artist/TopArtists";
 import RecentlyPlayedSongs from "../components/RecentlyPlayedSongs";
 import NewReleases from "../components/album/NewReleases";
 
+import { useTranslation } from "react-i18next";
+
 const HomeScreen = () => {
   const [userProfile, setUserProfile] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState("All");
   const navigation = useNavigation();
+
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = () => {
+    if (i18n.language === "en") {
+      i18n.changeLanguage("gr");
+    } else {
+      i18n.changeLanguage("en");
+    }
+  };
 
   const fetchCurrentUser = async () => {
     try {
@@ -122,13 +134,25 @@ const HomeScreen = () => {
                       }}
                     >
                       <Text style={{ fontSize: 15, color: "white" }}>
-                        {category}
+                        {t(category)}
                       </Text>
                     </Pressable>
                   ))}
                   {/* </View> */}
                 </View>
               </View>
+              <Pressable
+                onPress={changeLanguage}
+                style={{
+                  backgroundColor: selected === "Language" ? "gray" : "#282828",
+                  padding: 10,
+                  borderRadius: 30,
+                }}
+              >
+                <Text style={{ fontSize: 12, color: "white" }}>
+                  {t("Change Language")}
+                </Text>
+              </Pressable>
             </View>
 
             {/* Home page liked songs */}
@@ -173,13 +197,15 @@ const HomeScreen = () => {
                       </Pressable>
                     </LinearGradient>
                     <Text
+                      numberOfLines={1}
                       style={{
                         color: "white",
                         fontSize: 13,
                         fontWeight: "bold",
+                        width: 85,
                       }}
                     >
-                      Liked Songs
+                      {t("Liked Songs")}
                     </Text>
                   </Pressable>
 
@@ -216,13 +242,13 @@ const HomeScreen = () => {
                 </View>
 
                 {/* Users' top artists */}
-                <TopArtists />
+                <TopArtists t={t} />
               </View>
             )}
 
             {/* Always visible when "Music" is selected */}
-            <RecentlyPlayedSongs />
-            <NewReleases />
+            <RecentlyPlayedSongs t={t} />
+            <NewReleases t={t} />
           </SafeAreaView>
         </ScrollView>
       )}

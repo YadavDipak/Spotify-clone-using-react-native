@@ -10,6 +10,8 @@ import {
   NavigationIndependentTree,
 } from "@react-navigation/native";
 
+import { useTranslation } from "react-i18next";
+
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import ProfileScreen from "./screens/ProfileScreen";
@@ -24,6 +26,7 @@ import AlbumScreen from "./screens/AlbumScreen";
 const Tab = createBottomTabNavigator();
 
 function BottomTabs() {
+  const { t } = useTranslation();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -48,7 +51,7 @@ function BottomTabs() {
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarLabel: "Home",
+          tabBarLabel: t("Home"),
           headerShown: false,
           tabBarLabelStyle: { color: "white" },
           tabBarIcon: ({ focused }) =>
@@ -65,7 +68,7 @@ function BottomTabs() {
         name="Search"
         component={SearchScreen}
         options={{
-          tabBarLabel: "Search",
+          tabBarLabel: t("Search"),
           headerShown: false,
           tabBarLabelStyle: { color: "white" },
           tabBarIcon: ({ focused }) =>
@@ -87,7 +90,7 @@ function BottomTabs() {
         name="Library"
         component={LibraryScreen}
         options={{
-          tabBarLabel: "Your Library",
+          tabBarLabel: t("Your Library"),
           headerShown: false,
           tabBarLabelStyle: {
             color: "white",
@@ -106,7 +109,7 @@ function BottomTabs() {
         name="Profile"
         component={ProfileScreen}
         options={{
-          tabBarLabel: "Profile",
+          tabBarLabel: t("Profile"),
           headerShown: false,
           tabBarLabelStyle: { color: "white" },
           tabBarIcon: ({ focused }) =>

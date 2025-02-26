@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import { getUsersTopItems } from "../services/user";
 import { useNavigation } from "@react-navigation/native";
 
+import { useTranslation } from "react-i18next";
+
 const TopTracks = () => {
+  const { t } = useTranslation();
   const [topTrack, setTopTracks] = useState([]);
   const navigation = useNavigation();
 
@@ -34,7 +37,7 @@ const TopTracks = () => {
             fontSize: 20,
           }}
         >
-          Top Tracks
+          {t("Top Tracks")}
         </Text>
         <FlatList
           data={topTrack}

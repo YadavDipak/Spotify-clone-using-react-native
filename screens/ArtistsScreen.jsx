@@ -13,10 +13,14 @@ import { useNavigation } from "@react-navigation/native";
 import ShowArtistInfo from "../components/artists/ShowArtistInfo";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { useTranslation } from "react-i18next";
+
 const ArtistsScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const artist = route.params?.artist;
+
+  const { t } = useTranslation();
 
   if (!artist) return null;
 
@@ -74,7 +78,7 @@ const ArtistsScreen = () => {
                   fontWeight: "bold",
                 }}
               >
-                Followers: {artist.followers.total.toLocaleString()}
+                {t("Followers")}: {artist.followers.total.toLocaleString()}
               </Text>
 
               <Text
@@ -85,7 +89,7 @@ const ArtistsScreen = () => {
                   fontSize: 20,
                 }}
               >
-                Genres:{" "}
+                {t("Genres")}:{" "}
                 <Text style={{ fontSize: 15 }}>{artist.genres.join(", ")}</Text>
               </Text>
             </View>
