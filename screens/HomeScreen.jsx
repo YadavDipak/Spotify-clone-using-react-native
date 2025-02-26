@@ -20,6 +20,8 @@ import TopArtists from "../components/artist/TopArtists";
 import RecentlyPlayedSongs from "../components/RecentlyPlayedSongs";
 import NewReleases from "../components/album/NewReleases";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { useTranslation } from "react-i18next";
 
 const HomeScreen = () => {
@@ -30,12 +32,21 @@ const HomeScreen = () => {
   const navigation = useNavigation();
 
   const { t, i18n } = useTranslation();
+  const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
 
-  const changeLanguage = () => {
-    if (i18n.language === "en") {
-      i18n.changeLanguage("gr");
-    } else {
-      i18n.changeLanguage("en");
+  useEffect(() => {
+    setCurrentLanguage(i18n.language);
+  }, [i18n.language]);
+
+  const changeLanguage = async () => {
+    try {
+      const newLanguage = currentLanguage === "en" ? "de" : "en";
+      await AsyncStorage.setItem("appLanguage", newLanguage);
+      await i18n.changeLanguage(newLanguage);
+      setCurrentLanguage(newLanguage);
+      console.log("Language changed to:", newLanguage);
+    } catch (error) {
+      console.error("Error saving language:", error);
     }
   };
 
