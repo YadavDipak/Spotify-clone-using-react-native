@@ -24,6 +24,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useTranslation } from "react-i18next";
 
+import { Picker } from "@react-native-picker/picker";
+
 const HomeScreen = () => {
   const [userProfile, setUserProfile] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,13 +40,12 @@ const HomeScreen = () => {
     setCurrentLanguage(i18n.language);
   }, [i18n.language]);
 
-  const changeLanguage = async () => {
+  const changeLanguage = async (selectedLanguage) => {
     try {
-      const newLanguage = currentLanguage === "en" ? "de" : "en";
-      await AsyncStorage.setItem("appLanguage", newLanguage);
-      await i18n.changeLanguage(newLanguage);
-      setCurrentLanguage(newLanguage);
-      console.log("Language changed to:", newLanguage);
+      await AsyncStorage.setItem("appLanguage", selectedLanguage);
+      await i18n.changeLanguage(selectedLanguage);
+      setCurrentLanguage(selectedLanguage);
+      console.log("Language changed to:", selectedLanguage);
     } catch (error) {
       console.error("Error saving language:", error);
     }
@@ -152,18 +153,25 @@ const HomeScreen = () => {
                   {/* </View> */}
                 </View>
               </View>
-              <Pressable
-                onPress={changeLanguage}
+              <View
                 style={{
-                  backgroundColor: selected === "Language" ? "gray" : "#282828",
-                  padding: 10,
+                  backgroundColor: "#282828",
                   borderRadius: 30,
+                  width: 150,
+                  marginLeft: 10,
+                  maxHeight: 50,
                 }}
               >
-                <Text style={{ fontSize: 12, color: "white" }}>
-                  {t("Change Language")}
-                </Text>
-              </Pressable>
+                <Picker
+                  selectedValue={currentLanguage}
+                  onValueChange={(value) => changeLanguage(value)}
+                  style={{ color: "white" }}
+                >
+                  <Picker.Item label="English" value="en" />
+                  <Picker.Item label="हिन्दी" value="hi" />
+                  <Picker.Item label="Deutsch" value="de" />
+                </Picker>
+              </View>
             </View>
 
             {/* Home page liked songs */}

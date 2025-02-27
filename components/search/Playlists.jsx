@@ -1,42 +1,43 @@
-import React, { useContext, useState } from "react";
-import { View, Text, FlatList, Image, Pressable } from "react-native";
-
+import React from "react";
+import { View, Text, FlatList, Image, Pressable, Alert } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-
 import { useNavigation } from "@react-navigation/native";
-
-import { FollowedPlaylistContext } from "../../context/FollowedPlaylistContext";
-import { followPlaylist, unfollowPlaylist } from "../../services/playlist";
-
+import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+
+import {
+  followPlaylist as followPlaylistAPI,
+  unfollowPlaylist as unfollowPlaylistAPI,
+} from "../../services/playlist"; // API Calls
+import {
+  followPlaylist, // Redux Action
+  unfollowPlaylist, // Redux Action
+} from "../../src/redux/slices/followedPlaylistSlice"; // ✅ Correct Import
 
 const Playlists = ({ playlists }) => {
   const { t } = useTranslation();
-
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-  const { followedPlaylists, setFollowedPlaylists } = useContext(
-    FollowedPlaylistContext
+  // Get followed playlists from Redux store
+  const followedPlaylists = useSelector(
+    (state) => state.followedPlaylists?.followedPlaylists || []
   );
-  const [isFollowed, setIsFollowed] = useState(
-    followedPlaylists.map((item) => item.id)
-  );
+
+  // Convert followedPlaylists to an array of IDs
+  const followedPlaylistIds = followedPlaylists.map((item) => item.id);
 
   async function handleFollowAPlaylist(item) {
     try {
-      if (!isFollowed.includes(item.id)) {
-        const result = await followPlaylist(item.id);
+      if (!followedPlaylistIds.includes(item.id)) {
+        const result = await followPlaylistAPI(item.id);
         if (result) {
-          setFollowedPlaylists((prev) => [item, ...prev]);
-          setIsFollowed((prev) => [item.id, ...prev]);
+          dispatch(followPlaylist(item)); // ✅ Redux action
         }
       } else {
-        const result = await unfollowPlaylist(item.id);
+        const result = await unfollowPlaylistAPI(item.id);
         if (result) {
-          setFollowedPlaylists((prev) =>
-            prev.filter((it) => it.id !== item.id)
-          );
-          setIsFollowed((prev) => prev.filter((it) => it !== item.id));
+          dispatch(unfollowPlaylist(item.id)); // ✅ Redux action
         }
       }
     } catch (err) {
@@ -50,11 +51,7 @@ const Playlists = ({ playlists }) => {
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
         <Pressable
-          onPress={() => {
-            navigation.navigate("PlaylistScreen", {
-              item: item,
-            });
-          }}
+          onPress={() => navigation.navigate("PlaylistScreen", { item })}
         >
           <View
             style={{
@@ -70,9 +67,7 @@ const Playlists = ({ playlists }) => {
           >
             <Image
               style={{ width: 55, height: 55, borderRadius: 8 }}
-              source={{
-                uri: item.images[0]?.url,
-              }}
+              source={{ uri: item.images[0]?.url }}
             />
             <View
               style={{
@@ -108,16 +103,16 @@ const Playlists = ({ playlists }) => {
                 </Text>
               </View>
               <MaterialIcons
-                onPress={() => {
-                  handleFollowAPlaylist(item);
-                }}
+                onPress={() => handleFollowAPlaylist(item)}
                 name={
-                  isFollowed.includes(item.id)
+                  followedPlaylistIds.includes(item.id)
                     ? "playlist-add-check"
                     : "playlist-add"
                 }
                 size={24}
-                color={isFollowed.includes(item.id) ? "green" : "white"}
+                color={
+                  followedPlaylistIds.includes(item.id) ? "green" : "white"
+                }
               />
             </View>
           </View>

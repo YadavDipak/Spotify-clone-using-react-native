@@ -15,8 +15,13 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import { ProgressBar } from "react-native-paper";
-import { useContext, useState } from "react";
-import { LikedSongsContext } from "../context/LikedSongsContext";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchLikedSongs,
+  addLikedSong,
+  removeLikedSong,
+} from "../src/redux/slices/likedSongsSlice";
 import {
   removeTrackFromCurrentUser,
   saveTrackForCurrentUser,
@@ -26,27 +31,29 @@ const SongInfo = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { item } = route.params;
-  const [toggle, setToggle] = useState(true);
-  const { likedTracks, setLikedTracks } = useContext(LikedSongsContext);
-  const [isLiked, setIsLiked] = useState(
-    likedTracks.map((item) => item.track.id).includes(item.id)
+  const dispatch = useDispatch();
+
+  // Get liked tracks from Redux store
+  const likedTracks = useSelector(
+    (state) => state.likedSongs?.likedTracks || []
   );
+
+  const [toggle, setToggle] = useState(true);
+
+  // Check if song is liked
+  const isLiked = likedTracks.some((track) => track.id === item.id);
 
   async function handleSongLike() {
     try {
       if (isLiked) {
         const result = await removeTrackFromCurrentUser(item.id);
         if (result) {
-          setLikedTracks((prev) =>
-            prev.filter((it) => it.track.id !== item.id)
-          );
-          setIsLiked((prev) => !prev);
+          dispatch(removeLikedSong(item.id));
         }
       } else {
         const result = await saveTrackForCurrentUser(item.id);
         if (result) {
-          setLikedTracks((prev) => [{ track: item }, ...prev]);
-          setIsLiked((prev) => !prev);
+          dispatch(addLikedSong(item));
         }
       }
     } catch (err) {
@@ -111,11 +118,7 @@ const SongInfo = () => {
               <Text
                 numberOfLines={1}
                 ellipsizeMode="tail"
-                style={{
-                  color: "gray",
-                  fontSize: 14,
-                  width: 200,
-                }}
+                style={{ color: "gray", fontSize: 14, width: 200 }}
               >
                 {item?.artists?.map((artist) => artist.name).join(", ")}
               </Text>
@@ -135,19 +138,10 @@ const SongInfo = () => {
             </View>
           </View>
 
-          {/* Like unlike icons */}
-
-          <View
-            style={{
-              flexDirection: "row",
-              gap: 24,
-              alignItems: "center",
-            }}
-          >
+          {/* Like/Unlike Icons */}
+          <View style={{ flexDirection: "row", gap: 24, alignItems: "center" }}>
             <Ionicons name="add-circle-outline" size={35} color="white" />
-            <Pressable
-            // onPress={handleSongLike}
-            >
+            <Pressable onPress={handleSongLike}>
               <AntDesign
                 name="heart"
                 size={24}
@@ -158,7 +152,6 @@ const SongInfo = () => {
         </View>
 
         {/* Progress Bar */}
-
         <View style={{ marginTop: 32 }}>
           <ProgressBar
             progress={Math.random()}
@@ -177,7 +170,7 @@ const SongInfo = () => {
           </View>
         </View>
 
-        {/* Left, Start, Stop, right icons songs */}
+        {/* Left, Start, Stop, Right Icons */}
         <View
           style={{
             flexDirection: "row",

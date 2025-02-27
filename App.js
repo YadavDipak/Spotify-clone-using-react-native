@@ -1,21 +1,16 @@
 import React from "react";
-
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./src/redux/store";
 import Navigation from "./StackNavigator";
-import { UserContextProvider } from "./context/UserContext";
-import { LikedSongsContextProvider } from "./context/LikedSongsContext";
-import { FollowedPlayListContextProvider } from "./context/FollowedPlaylistContext";
 
 const RootLayout = () => {
   return (
-    <>
-      <UserContextProvider>
-        <LikedSongsContextProvider>
-          <FollowedPlayListContextProvider>
-            <Navigation />
-          </FollowedPlayListContextProvider>
-        </LikedSongsContextProvider>
-      </UserContextProvider>
-    </>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Navigation />
+      </PersistGate>
+    </Provider>
   );
 };
 

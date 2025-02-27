@@ -1,56 +1,54 @@
+import React, { useEffect, useState } from "react";
 import { Alert, FlatList, Image, Pressable, Text, View } from "react-native";
-import React, { useEffect, useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { Entypo } from "@expo/vector-icons";
+
+import { useDispatch, useSelector } from "react-redux";
 import {
-  getPlaylistSongs,
   followPlaylist,
   unfollowPlaylist,
+} from "../src/redux/slices/followedPlaylistSlice";
+import {
+  getPlaylistSongs,
+  followPlaylist as followPlaylistAPI,
+  unfollowPlaylist as unfollowPlaylistAPI,
 } from "../services/playlist";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { Entypo } from "@expo/vector-icons";
 import { reduceUniqueSongs } from "../utils/getUniqueSongs";
-import Ionicons from "@expo/vector-icons/Ionicons";
-
-import { FollowedPlaylistContext } from "../context/FollowedPlaylistContext";
-
 import { useTranslation } from "react-i18next";
 
 const PlaylistScreen = () => {
   const { t } = useTranslation();
-
   const navigation = useNavigation();
   const route = useRoute();
   const { item } = route.params;
+  const dispatch = useDispatch();
+
   const [playlistTracks, setPlayListsTracks] = useState([]);
 
-  console.log("item ---------------------------------------", item);
-
-  const { followedPlaylists, setFollowedPlaylists } = useContext(
-    FollowedPlaylistContext
+  // Get followed playlists from Redux store
+  const followedPlaylists = useSelector(
+    (state) => state.followedPlaylists?.followedPlaylists || []
+  );
+  const isFollowed = followedPlaylists.some(
+    (playlist) => playlist.id === item.id
   );
 
-  const [isFollowed, setIsFollowed] = useState(
-    followedPlaylists.map((item) => item.id)
-  );
-
-  // function to follow a playlist
+  // Function to follow/unfollow playlist
   async function handleFollowAPlaylist() {
     try {
-      if (!isFollowed.includes(item.id)) {
-        const result = await followPlaylist(item.id);
+      if (!isFollowed) {
+        const result = await followPlaylistAPI(item.id);
         if (result) {
-          setFollowedPlaylists((prev) => [item, ...prev]);
-          setIsFollowed((prev) => [item.id, ...prev]);
+          dispatch(followPlaylist(item));
         }
       } else {
-        const result = await unfollowPlaylist(item.id);
+        const result = await unfollowPlaylistAPI(item.id);
         if (result) {
-          setFollowedPlaylists((prev) =>
-            prev.filter((it) => it.id !== item.id)
-          );
-          setIsFollowed((prev) => prev.filter((it) => it !== item.id));
+          dispatch(unfollowPlaylist(item.id));
         }
       }
     } catch (err) {
@@ -108,18 +106,11 @@ const PlaylistScreen = () => {
             <Text style={{ color: "white", fontSize: 16, fontWeight: "600" }}>
               {item.tracks.total} {t("Songs")}
             </Text>
-            {/* <MaterialIcons name="playlist-add-check" size={24} color="green" /> */}
             <MaterialIcons
-              onPress={() => {
-                handleFollowAPlaylist();
-              }}
-              name={
-                isFollowed.includes(item.id)
-                  ? "playlist-add-check"
-                  : "playlist-add"
-              }
+              onPress={handleFollowAPlaylist}
+              name={isFollowed ? "playlist-add-check" : "playlist-add"}
               size={24}
-              color={isFollowed.includes(item.id) ? "green" : "white"}
+              color={isFollowed ? "green" : "white"}
             />
           </View>
         </View>
@@ -157,9 +148,9 @@ const PlaylistScreen = () => {
                 <Image
                   style={{ width: 55, height: 55, borderRadius: 8 }}
                   source={{
-                    uri: item?.track?.album?.images[0]?.url
-                      ? item?.track?.album?.images[0]?.url
-                      : "https://static.vecteezy.com/system/resources/previews/002/249/673/non_2x/music-note-icon-song-melody-tune-flat-symbol-free-vector.jpg",
+                    uri:
+                      item?.track?.album?.images[0]?.url ||
+                      "https://static.vecteezy.com/system/resources/previews/002/249/673/non_2x/music-note-icon-song-melody-tune-flat-symbol-free-vector.jpg",
                   }}
                 />
                 <View
