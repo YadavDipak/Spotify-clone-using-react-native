@@ -20,6 +20,7 @@ export const authConfig = {
       scheme: "spotify-project",
       useProxy: true,
     }),
+    // redirectUri: "exp://10.39.18.73:8081",
   },
   discovery: {
     authorizationEndpoint: AUTHORIZATION_ENDPOINT,
