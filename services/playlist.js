@@ -18,8 +18,8 @@ export async function getPlaylist(playlistId) {
       null,
       {}
     );
-    console.log("playlistId -------", playlistId);
-    console.log("response.data", response.data);
+    // console.log("playlistId -------", playlistId);
+    // console.log("response.data", response.data);
 
     if (!response?.data) {
       throw new Error("Unexpected response format");

@@ -61,7 +61,7 @@ const LoginScreen = () => {
 
       const accessToken = await AsyncStorage.getItem("token");
       const expirationDate = await AsyncStorage.getItem("expirationDate");
-      console.log("Retrieved access token:", accessToken);
+      // console.log("Retrieved access token:", accessToken);
       console.log("Retrieved expiration date:", expirationDate);
 
       if (accessToken && expirationDate) {

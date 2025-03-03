@@ -41,7 +41,7 @@ const TopArtists = () => {
     fetchTopArtists();
   }, [t]);
 
-  console.log("Top Artists-------------------------------------", topArtists);
+  // console.log("Top Artists-------------------------------------", topArtists);
 
   return (
     <>

@@ -40,7 +40,7 @@ const AlbumScreen = () => {
     fetchAlbumTracks();
   }, []);
 
-  console.log("item tracks -----------", item);
+  // console.log("item tracks -----------", item);
   return (
     <LinearGradient colors={["#040306", "#131624"]} style={{ flex: 1 }}>
       <SafeAreaView>
