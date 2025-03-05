@@ -35,3 +35,8 @@ export const PLAYLIST_ENDPOINTS = {
   FOLLOW_PLAYLIST: "/playlists",
   UNFOLLOW_PLAYLIST: "/playlists",
 };
+
+// TRACK END POINTS
+export const TRACK_END_POINTS = {
+  GET_TRACK: "/tracks",
+};

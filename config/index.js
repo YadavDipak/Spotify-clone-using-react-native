@@ -1,6 +1,7 @@
 import { CLIENT_ID, AUTHORIZATION_ENDPOINT, BASE_URL } from "@env";
 import { makeRedirectUri, ResponseType } from "expo-auth-session";
-// exporting the auth config
+
+// Exporting the auth config
 export const authConfig = {
   config: {
     responseType: ResponseType.Token,
@@ -18,16 +19,16 @@ export const authConfig = {
     usePKCE: true,
     redirectUri: makeRedirectUri({
       scheme: "spotify-project",
+      path: "Login",
       useProxy: true,
     }),
-    // redirectUri: "exp://10.39.18.73:8081",
   },
   discovery: {
     authorizationEndpoint: AUTHORIZATION_ENDPOINT,
   },
 };
 
-// export the api config
+// Export the api config
 export const apiConfig = {
   baseUrl: BASE_URL,
 };

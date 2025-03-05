@@ -38,10 +38,7 @@ const LoginScreen = () => {
     }
   );
 
-  const redirectUri = makeRedirectUri({
-    useProxy: true,
-  });
-  console.log("Redirect URI:", redirectUri);
+  console.log("Redirect URI:", authConfig.config.redirectUri);
 
   const handleLogin = async () => {
     if (!request || isAuthenticating) return;
@@ -61,8 +58,6 @@ const LoginScreen = () => {
 
       const accessToken = await AsyncStorage.getItem("token");
       const expirationDate = await AsyncStorage.getItem("expirationDate");
-      // console.log("Retrieved access token:", accessToken);
-      console.log("Retrieved expiration date:", expirationDate);
 
       if (accessToken && expirationDate) {
         const currentTime = Date.now();
@@ -87,8 +82,7 @@ const LoginScreen = () => {
 
         const { access_token, expires_in } = response.params;
         if (access_token) {
-          const expirationDate = Date.now() + expires_in * 1000; // Convert expires_in to milliseconds
-
+          const expirationDate = Date.now() + expires_in * 1000;
           await AsyncStorage.setItem("token", access_token);
           await AsyncStorage.setItem(
             "expirationDate",

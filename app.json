@@ -15,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.spotify-project",
+      "bundleIdentifier": "com.anonymous.spotifyproject",
       "infoPlist": {
         "CFBundleURLTypes": [
           {
@@ -34,7 +34,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.spotify-project",
+      "package": "com.anonymous.spotifyproject",
       "intentFilters": [
         {
           "action": "VIEW",
@@ -56,8 +56,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-localization"
-    ]
+    "plugins": ["expo-localization"]
   }
 }
