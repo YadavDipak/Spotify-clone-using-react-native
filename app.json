@@ -19,10 +19,14 @@
       "infoPlist": {
         "CFBundleURLTypes": [
           {
-            "CFBundleURLSchemes": ["spotify-project"]
+            "CFBundleURLSchemes": [
+              "spotify-project"
+            ]
           }
         ],
-        "LSApplicationQueriesSchemes": ["spotify-project"]
+        "LSApplicationQueriesSchemes": [
+          "spotify-project"
+        ]
       },
       "associatedDomains": [
         "applinks:my-app-dipak.com",
@@ -49,13 +53,24 @@
               "host": "song"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-localization"]
+    "plugins": [
+      "expo-localization"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ff5861c2-eb35-40da-ae3e-6f7e82f92c29"
+      }
+    },
+    "owner": "dipak2911"
   }
 }
