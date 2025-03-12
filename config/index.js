@@ -18,6 +18,7 @@ export const authConfig = {
     usePKCE: true,
     redirectUri: makeRedirectUri({
       scheme: "spotify-project",
+      path: "Login",
       useProxy: true,
     }),
     // redirectUri: "exp://10.39.18.73:8081",
