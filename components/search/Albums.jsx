@@ -1,70 +1,76 @@
-import { View, Text, FlatList, Image } from "react-native";
 import React from "react";
+import { View, Text, FlatList, Image, Pressable } from "react-native";
+
+import { useNavigation } from "@react-navigation/native";
 
 const Albums = ({ albums }) => {
-  console.log("Printing the albums::==>>", albums);
+  const navigation = useNavigation();
 
   return (
     <FlatList
       data={albums}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
-        <View
-          style={{
-            marginBottom: 8,
-            flexDirection: "row",
-            width: "100%",
-            alignItems: "center",
-            gap: 8,
-            marginHorizontal: 8,
-            marginVertical: 8,
-            borderRadius: 8,
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.2,
-            shadowRadius: 4,
-            padding: 8,
-            backgroundColor: "#1c1c1e",
+        <Pressable
+          onPress={() => {
+            navigation.navigate("AlbumScreen", {
+              item: item,
+            });
           }}
         >
-          <Image
-            style={{ width: 55, height: 55, borderRadius: 8 }}
-            source={{
-              uri: item.images[0]?.url,
+          <View
+            style={{
+              marginTop: 8,
+              marginBottom: 8,
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 10,
+              borderRadius: 8,
+              padding: 5,
+              backgroundColor: "#1c1c1e",
+              width: "95%",
+              alignItems: "center",
+              alignSelf: "center",
             }}
-          />
-          <View>
-            <Text
-              style={{
-                color: "white",
-                fontSize: 22,
-                paddingLeft: 8,
-                fontWeight: "bold",
-                width: 250,
+          >
+            <Image
+              style={{ width: 55, height: 55, borderRadius: 8 }}
+              source={{
+                uri: item.images[0]?.url,
               }}
-            >
-              {item?.name.length < 30
-                ? item?.name
-                : item?.name.slice(0, 30) + "..."}
-            </Text>
-            <Text
-              style={{
-                color: "gray",
-                fontSize: 14,
-                paddingLeft: 8,
-                fontWeight: "600",
-                width: 250,
-              }}
-            >
-              {item?.artists.length > 0 &&
-                (item?.artists[0]?.name.length < 30
-                  ? item?.artists[0]?.name
-                  : item?.artists[0]?.name.slice(0, 30) + "...")}
-            </Text>
+            />
+            <View>
+              <Text
+                numberOfLines={1}
+                style={{
+                  color: "white",
+                  fontSize: 16,
+                  paddingLeft: 8,
+                  fontWeight: "bold",
+                  width: 250,
+                }}
+              >
+                {item?.name.length < 30
+                  ? item?.name
+                  : item?.name.slice(0, 30) + "..."}
+              </Text>
+              <Text
+                style={{
+                  color: "gray",
+                  fontSize: 14,
+                  paddingLeft: 8,
+                }}
+              >
+                {item?.artists.length > 0 &&
+                  (item?.artists[0]?.name.length < 30
+                    ? item?.artists[0]?.name
+                    : item?.artists[0]?.name.slice(0, 30) + "...")}
+              </Text>
+            </View>
           </View>
-        </View>
+        </Pressable>
       )}
-      contentContainerStyle={{ paddingBottom: 250 }} // Prevent last item from getting cut off
+      contentContainerStyle={{ paddingBottom: 250 }}
       ListEmptyComponent={
         <View
           style={{
