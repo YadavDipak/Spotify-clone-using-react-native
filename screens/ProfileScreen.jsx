@@ -8,7 +8,11 @@ import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { getCurrentUser } from "../services/user";
 
+import { useTranslation } from "react-i18next";
+
 const ProfileScreen = () => {
+  const { t } = useTranslation();
+
   const [userProfile, setUserProfile] = useState(null);
   const navigation = useNavigation();
 
@@ -71,12 +75,12 @@ const ProfileScreen = () => {
                   {userProfile?.followers.total}
                   <Text style={{ color: "#B0B0B0", fontWeight: "600" }}>
                     {" "}
-                    followers
+                    {t("followers")}
                   </Text>
                   <Text style={{ color: "white" }}> • </Text>5
                   <Text style={{ color: "#B0B0B0", fontWeight: "600" }}>
                     {" "}
-                    following
+                    {t("following")}
                   </Text>
                 </Text>
               </View>
@@ -90,10 +94,11 @@ const ProfileScreen = () => {
                 paddingVertical: 8,
                 paddingHorizontal: 16,
                 borderRadius: 50,
-                width: 80,
               }}
             >
-              <Text style={{ color: "white", textAlign: "center" }}>Edit</Text>
+              <Text style={{ color: "white", textAlign: "center" }}>
+                {t("Edit")}
+              </Text>
             </TouchableOpacity>
             <Entypo name="dots-three-vertical" size={22} color="white" />
           </View>
@@ -113,7 +118,7 @@ const ProfileScreen = () => {
               fontWeight: "600",
             }}
           >
-            No Recent Activity
+            {t("No Recent Activity")}
           </Text>
         </LinearGradient>
       </View>
