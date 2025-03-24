@@ -1,12 +1,22 @@
-import { StatusBar } from "expo-status-bar";
-import { NavigationContainer } from "@react-navigation/native";
-import Navigation from "./StackNavigator";
+import React from "react";
 
-export default function App() {
+import Navigation from "./StackNavigator";
+import { UserContextProvider } from "./context/UserContext";
+import { LikedSongsContextProvider } from "./context/LikedSongsContext";
+import { FollowedPlayListContextProvider } from "./context/FollowedPlaylistContext";
+
+const RootLayout = () => {
   return (
-    <NavigationContainer>
-      <StatusBar style="light" />
-      <Navigation />
-    </NavigationContainer>
+    <>
+      <UserContextProvider>
+        <LikedSongsContextProvider>
+          <FollowedPlayListContextProvider>
+            <Navigation />
+          </FollowedPlayListContextProvider>
+        </LikedSongsContextProvider>
+      </UserContextProvider>
+    </>
   );
-}
+};
+
+export default RootLayout;
