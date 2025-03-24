@@ -3,7 +3,7 @@ import { AntDesign, Entypo } from "@expo/vector-icons";
 
 const SongItem = ({ item, isPlaying = false }) => {
   const handlePress = () => {
-    console.log("SongItem handlePress");
+    // console.log("SongItem handlePress");
   };
   return (
     <Pressable
