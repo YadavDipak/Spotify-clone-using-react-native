@@ -35,6 +35,11 @@ const LoginScreen = () => {
     }
   );
 
+  const redirectUri = makeRedirectUri({
+    useProxy: true,
+  });
+  console.log("Redirect URI:", redirectUri);
+
   const handleLogin = async () => {
     if (!request || isAuthenticating) return;
     try {

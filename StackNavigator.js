@@ -5,13 +5,14 @@ import Entypo from "@expo/vector-icons/Entypo";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import HomeScreen from "./screens/HomeScreen";
-import LoginScreen from "./screens/LoginScreen";
-import ProfileScreen from "./screens/ProfileScreen";
 import {
   NavigationContainer,
   NavigationIndependentTree,
 } from "@react-navigation/native";
+
+import HomeScreen from "./screens/HomeScreen";
+import LoginScreen from "./screens/LoginScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 import SearchScreen from "./screens/SearchScreen";
 import LikedSongsScreen from "./screens/LikedSongsScreen";
 import ArtistsScreen from "./screens/ArtistsScreen";
@@ -167,7 +168,7 @@ function Navigation() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="AlbumPage"
+            name="AlbumScreen"
             component={AlbumScreen}
             options={{ headerShown: false }}
           />

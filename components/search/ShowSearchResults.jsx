@@ -1,9 +1,10 @@
-import { View, Text, Pressable } from "react-native";
 import React, { useState } from "react";
+import { View, Text, Pressable } from "react-native";
+
 import Tracks from "./Tracks";
+import Artists from "./Artists";
 import Albums from "./Albums";
 import Playlists from "./Playlists";
-import Artists from "./Artists";
 
 const ShowSearchResults = ({ searchResults }) => {
   const [selected, setSelected] = useState("Tracks");
@@ -17,10 +18,10 @@ const ShowSearchResults = ({ searchResults }) => {
         <View>
           <View
             style={{
-              width: "100%",
               flexDirection: "row",
               justifyContent: "space-between",
-              padding: 8,
+              paddingTop: 10,
+              paddingBottom: 8,
             }}
           >
             {filters.map((filter) => {
