@@ -1,3 +1,4 @@
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -6,15 +7,20 @@ import {
   Pressable,
   BackHandler,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import TopTracks from "../components/TopTracks";
+
 import { getCategorizedResult } from "../services/search";
+
+import TopTracks from "../components/TopTracks";
 import ShowSearchResults from "../components/search/ShowSearchResults";
 
+import { useTranslation } from "react-i18next";
+
 const SearchScreen = () => {
+  const { t } = useTranslation();
   const [searchText, setSearchText] = useState("");
   const [isSearchInputFocused, setIsSearchInputFocused] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
@@ -74,7 +80,7 @@ const SearchScreen = () => {
             }}
           >
             <Text style={{ color: "white", fontSize: 30, fontWeight: "bold" }}>
-              Search
+              {t("Search")}
             </Text>
           </View>
 
@@ -110,15 +116,15 @@ const SearchScreen = () => {
                 borderRadius: 10,
                 height: 60,
               }}
-              placeholder="What do you want to listen to?"
+              placeholder={t("What do you want to listen to?")}
               placeholderTextColor="rgba(0, 0, 0, 0.8)"
             />
           </View>
 
           {!isSearchInputFocused && searchText.trim().length === 0 ? (
-            <TopTracks />
+            <TopTracks t={t} />
           ) : (
-            <ShowSearchResults searchResults={searchResults} />
+            <ShowSearchResults searchResults={searchResults} t={t} />
           )}
         </View>
       </SafeAreaView>

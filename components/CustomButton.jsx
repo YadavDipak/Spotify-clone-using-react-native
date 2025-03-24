@@ -1,10 +1,15 @@
 import { Text, Pressable } from "react-native";
 import React from "react";
 
-const CustomButton = ({ isActive, handlePress, category }) => {
+const CustomButton = ({
+  isActive,
+  handlePress,
+  categoryKey,
+  categoryLabel,
+}) => {
   return (
     <Pressable
-      onPress={() => handlePress(category)}
+      onPress={() => handlePress(categoryKey)}
       style={{
         backgroundColor: isActive ? "#40ff00" : "#282828",
         paddingTop: 5,
@@ -13,7 +18,9 @@ const CustomButton = ({ isActive, handlePress, category }) => {
         borderRadius: 999,
       }}
     >
-      <Text style={{ color: isActive ? "black" : "white" }}>{category}</Text>
+      <Text style={{ color: isActive ? "black" : "white" }}>
+        {categoryLabel}
+      </Text>
     </Pressable>
   );
 };

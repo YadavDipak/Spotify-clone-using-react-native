@@ -14,6 +14,8 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { authConfig } from "../config";
 
+import { useTranslation } from "react-i18next";
+
 import {
   Entypo,
   MaterialCommunityIcons,
@@ -23,6 +25,7 @@ import {
 } from "@expo/vector-icons";
 
 const LoginScreen = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
@@ -34,6 +37,11 @@ const LoginScreen = () => {
       ...authConfig.discovery,
     }
   );
+
+  const redirectUri = makeRedirectUri({
+    useProxy: true,
+  });
+  console.log("Redirect URI:", redirectUri);
 
   const handleLogin = async () => {
     if (!request || isAuthenticating) return;
@@ -53,7 +61,7 @@ const LoginScreen = () => {
 
       const accessToken = await AsyncStorage.getItem("token");
       const expirationDate = await AsyncStorage.getItem("expirationDate");
-      console.log("Retrieved access token:", accessToken);
+      // console.log("Retrieved access token:", accessToken);
       console.log("Retrieved expiration date:", expirationDate);
 
       if (accessToken && expirationDate) {
@@ -123,7 +131,7 @@ const LoginScreen = () => {
             marginTop: 30,
           }}
         >
-          Millions of Songs Free on spotify!
+          {t("Millions of Songs Free on spotify!")}
         </Text>
 
         <View style={{ height: 80 }} />
@@ -158,7 +166,7 @@ const LoginScreen = () => {
               flex: 1,
             }}
           >
-            Continue with email
+            {t("Continue with email")}
           </Text>
         </Pressable>
 
@@ -189,7 +197,7 @@ const LoginScreen = () => {
               flex: 1,
             }}
           >
-            Continue with phone number
+            {t("Continue with phone number")}
           </Text>
         </Pressable>
 
@@ -220,7 +228,7 @@ const LoginScreen = () => {
               flex: 1,
             }}
           >
-            Continue with Google
+            {t("Continue with Google")}
           </Text>
         </Pressable>
 
@@ -251,7 +259,7 @@ const LoginScreen = () => {
               flex: 1,
             }}
           >
-            Continue with facebook
+            {t("Continue with facebook")}
           </Text>
         </Pressable>
       </SafeAreaView>

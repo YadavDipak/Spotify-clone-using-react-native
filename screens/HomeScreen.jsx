@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Image,
   Pressable,
@@ -7,35 +7,70 @@ import {
   Text,
   View,
   Alert,
+  RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
-
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-
 import { getCurrentUser } from "../services/user";
 import TopArtists from "../components/artist/TopArtists";
 import RecentlyPlayedSongs from "../components/RecentlyPlayedSongs";
 import NewReleases from "../components/album/NewReleases";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { useTranslation } from "react-i18next";
+
+import { Picker } from "@react-native-picker/picker";
+
 const HomeScreen = () => {
   const [userProfile, setUserProfile] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [selected, setSelected] = useState("All");
   const navigation = useNavigation();
 
-  useEffect(() => {
-    const fetchCurrentUser = async () => {
-      try {
-        const result = await getCurrentUser();
+  const { t, i18n } = useTranslation();
+  const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
 
-        if (result) {
-          setUserProfile(result);
-        }
-      } catch (err) {
-        Alert.alert("Error", err.message);
+  useEffect(() => {
+    setCurrentLanguage(i18n.language);
+  }, [i18n.language]);
+
+  const changeLanguage = async (selectedLanguage) => {
+    try {
+      await AsyncStorage.setItem("appLanguage", selectedLanguage);
+      await i18n.changeLanguage(selectedLanguage);
+      setCurrentLanguage(selectedLanguage);
+      console.log("Language changed to:", selectedLanguage);
+    } catch (error) {
+      console.error("Error saving language:", error);
+    }
+  };
+
+  const fetchCurrentUser = async () => {
+    try {
+      const result = await getCurrentUser();
+      if (result) {
+        setUserProfile(result);
       }
-    };
+    } catch (err) {
+      Alert.alert("Error", err.message);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
     fetchCurrentUser();
   }, []);
 
@@ -44,154 +79,198 @@ const HomeScreen = () => {
       colors={["#040306", "#131624"]}
       style={{ flex: 1, padding: 10 }}
     >
-      <ScrollView style={{ marginTop: 10 }}>
-        <SafeAreaView>
-          {/* Home page header */}
-          <View
-            style={{
-              padding: 10,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
+      {loading ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <ActivityIndicator size="large" color="#FFFFFF" />
+        </View>
+      ) : (
+        <ScrollView
+          style={{ marginTop: 10 }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <SafeAreaView>
+            {/* Home page header */}
             <View
               style={{
+                padding: 10,
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
               }}
             >
-              {/* User Profile Image */}
-              {userProfile?.images?.length > 0 && (
-                <Image
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 20,
-                    resizeMode: "cover",
-                  }}
-                  source={{ uri: userProfile?.images[0].url }}
-                />
-              )}
-
-              {/* Filter Buttons in a Row */}
               <View
                 style={{
-                  marginLeft: 20,
                   flexDirection: "row",
                   alignItems: "center",
-                  gap: 10,
+                  justifyContent: "space-between",
                 }}
               >
-                <Pressable
-                  style={{
-                    backgroundColor: "#282828",
-                    padding: 10,
-                    borderRadius: 30,
-                  }}
-                >
-                  <Text style={{ fontSize: 15, color: "white" }}>All</Text>
+                {/* User Profile Image */}
+                <Pressable onPress={() => navigation.navigate("Profile")}>
+                  {userProfile?.images?.length > 0 && (
+                    <Image
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        resizeMode: "cover",
+                      }}
+                      source={{ uri: userProfile?.images[0]?.url }}
+                    />
+                  )}
                 </Pressable>
 
-                <Pressable
+                {/* Filter Buttons in a Row */}
+                <View
                   style={{
-                    backgroundColor: "#282828",
-                    padding: 10,
-                    borderRadius: 30,
-                  }}
-                >
-                  <Text style={{ fontSize: 15, color: "white" }}>Music</Text>
-                </Pressable>
-              </View>
-            </View>
-          </View>
-
-          {/* Home page liked songs */}
-
-          <View style={{ height: 10 }} />
-
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Pressable
-              onPress={() => navigation.navigate("Liked")}
-              style={{
-                marginBottom: 10,
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 10,
-                flex: 1,
-                marginHorizontal: 10,
-                marginVertical: 8,
-                backgroundColor: "#202020",
-                borderRadius: 4,
-                elevation: 3,
-              }}
-            >
-              <LinearGradient colors={["#33006F", "#FFFFFF"]}>
-                <Pressable
-                  style={{
-                    width: 55,
-                    height: 55,
-                    justifyContent: "center",
+                    marginLeft: 20,
+                    flexDirection: "row",
                     alignItems: "center",
+                    gap: 10,
                   }}
                 >
-                  <AntDesign name="heart" size={24} color="white" />
-                </Pressable>
-              </LinearGradient>
-
-              <Text
-                style={{ color: "white", fontSize: 13, fontWeight: "bold" }}
+                  {/* <View> */}
+                  {["All", "Music"].map((category) => (
+                    <Pressable
+                      key={category}
+                      onPress={() => setSelected(category)}
+                      style={{
+                        backgroundColor:
+                          selected === category ? "gray" : "#282828",
+                        padding: 10,
+                        borderRadius: 30,
+                      }}
+                    >
+                      <Text style={{ fontSize: 15, color: "white" }}>
+                        {t(category)}
+                      </Text>
+                    </Pressable>
+                  ))}
+                  {/* </View> */}
+                </View>
+              </View>
+              <View
+                style={{
+                  backgroundColor: "#282828",
+                  borderRadius: 30,
+                  width: 150,
+                  marginLeft: 10,
+                  maxHeight: 50,
+                }}
               >
-                Liked Songs
-              </Text>
-            </Pressable>
-
-            {/* Random Artist */}
-            <View
-              style={{
-                marginBottom: 10,
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 10,
-                flex: 1,
-                marginHorizontal: 10,
-                marginVertical: 8,
-                backgroundColor: "#202020",
-                borderRadius: 4,
-                elevation: 3,
-              }}
-            >
-              <Image
-                style={{ width: 55, height: 55 }}
-                source={{ uri: "https://i.pravatar.cc/100" }}
-              />
-              <View style={styles.randomArtist}>
-                <Text
-                  style={{ color: "white", fontSize: 13, fontWeight: "bold" }}
+                <Picker
+                  selectedValue={currentLanguage}
+                  onValueChange={(value) => changeLanguage(value)}
+                  style={{ color: "white" }}
                 >
-                  Tamhiza
-                </Text>
+                  <Picker.Item label="English" value="en" />
+                  <Picker.Item label="हिन्दी" value="hi" />
+                  <Picker.Item label="Deutsch" value="de" />
+                </Picker>
               </View>
             </View>
-          </View>
 
-          {/* users's top artists */}
-          <TopArtists />
+            {/* Home page liked songs */}
 
-          {/* user's recently played songs */}
-          <RecentlyPlayedSongs />
+            <View style={{ height: 10 }} />
 
-          {/* New release songs */}
-          <NewReleases />
-        </SafeAreaView>
-      </ScrollView>
+            {/* Render only if "All" is selected */}
+            {selected === "All" && (
+              <View>
+                {/* Liked Songs and Random Artist */}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Pressable
+                    onPress={() => navigation.navigate("Liked")}
+                    style={{
+                      marginBottom: 10,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 10,
+                      flex: 1,
+                      marginHorizontal: 10,
+                      marginVertical: 8,
+                      backgroundColor: "#202020",
+                      borderRadius: 4,
+                    }}
+                  >
+                    <LinearGradient colors={["#33006F", "#FFFFFF"]}>
+                      <Pressable
+                        style={{
+                          width: 55,
+                          height: 55,
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <AntDesign name="heart" size={24} color="white" />
+                      </Pressable>
+                    </LinearGradient>
+                    <Text
+                      numberOfLines={1}
+                      style={{
+                        color: "white",
+                        fontSize: 13,
+                        fontWeight: "bold",
+                        width: 85,
+                      }}
+                    >
+                      {t("Liked Songs")}
+                    </Text>
+                  </Pressable>
+
+                  {/* Random Artist */}
+                  <View
+                    style={{
+                      marginBottom: 10,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 10,
+                      flex: 1,
+                      marginHorizontal: 10,
+                      marginVertical: 8,
+                      backgroundColor: "#202020",
+                      borderRadius: 4,
+                    }}
+                  >
+                    <Image
+                      style={{ width: 55, height: 55 }}
+                      source={{ uri: "https://i.pravatar.cc/100" }}
+                    />
+                    <View>
+                      <Text
+                        style={{
+                          color: "white",
+                          fontSize: 13,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Tamhiza
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+
+                {/* Users' top artists */}
+                <TopArtists t={t} />
+              </View>
+            )}
+
+            {/* Always visible when "Music" is selected */}
+            <RecentlyPlayedSongs t={t} />
+            <NewReleases t={t} />
+          </SafeAreaView>
+        </ScrollView>
+      )}
     </LinearGradient>
   );
 };

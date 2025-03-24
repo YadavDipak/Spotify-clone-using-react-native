@@ -1,12 +1,14 @@
-import { Alert, FlatList, Image, Pressable, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getArtistTopSongs } from "../../services/artist";
+import { Alert, FlatList, Image, Pressable, Text, View } from "react-native";
+
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
+import { getArtistTopSongs } from "../../services/artist";
+
 const TopSongs = ({ artistId }) => {
-  const [topSongs, setTopSongs] = useState([]);
   const navigation = useNavigation();
+  const [topSongs, setTopSongs] = useState([]);
 
   useEffect(() => {
     const fetchArtistsTopSongs = async () => {
@@ -23,10 +25,11 @@ const TopSongs = ({ artistId }) => {
 
     fetchArtistsTopSongs();
   }, []);
+
   return (
     <>
       <FlatList
-        style={{ marginTop: 20 }}
+        style={{ marginTop: 10 }}
         data={topSongs}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item, index }) => (
@@ -35,16 +38,11 @@ const TopSongs = ({ artistId }) => {
             style={{
               marginBottom: 8,
               flexDirection: "row",
-              width: "95%",
               alignItems: "center",
               gap: 8,
               marginHorizontal: 8,
-              marginVertical: 8,
               borderRadius: 8,
-              shadowColor: "#000",
-              shadowOpacity: 0.2,
-              shadowRadius: 4,
-              padding: 8,
+              padding: 5,
               backgroundColor: "#202020",
             }}
           >
@@ -54,7 +52,7 @@ const TopSongs = ({ artistId }) => {
                   color: "white",
                   fontSize: 16,
                   fontWeight: "bold",
-                  marginRight: 8,
+                  width: 25,
                 }}
               >
                 {index + 1}
@@ -66,16 +64,18 @@ const TopSongs = ({ artistId }) => {
             />
             <View
               style={{
-                width: "75%",
+                width: "70%",
                 flexDirection: "row",
                 justifyContent: "space-between",
+                alignItems: "center",
               }}
             >
-              <View>
+              <View style={{ marginLeft: 10 }}>
                 <Text
+                  numberOfLines={1}
                   style={{
                     color: "white",
-                    fontSize: 20,
+                    fontSize: 15,
                     fontWeight: "bold",
                     width: 200,
                   }}
@@ -85,10 +85,10 @@ const TopSongs = ({ artistId }) => {
                     : item?.name.slice(0, 25) + "..."}
                 </Text>
                 <Text
+                  numberOfLines={1}
                   style={{
-                    color: "white",
+                    color: "gray",
                     fontSize: 12,
-                    fontWeight: "600",
                     width: 200,
                   }}
                 >

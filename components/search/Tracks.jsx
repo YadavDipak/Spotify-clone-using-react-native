@@ -9,19 +9,13 @@ const Tracks = ({ tracks }) => {
       renderItem={({ item }) => (
         <View
           style={{
-            marginBottom: 8,
+            marginBottom: 5,
             flexDirection: "row",
-            width: "100%",
             alignItems: "center",
             gap: 15,
-            marginHorizontal: 8,
             marginVertical: 8,
             backgroundColor: "#202020",
             borderRadius: 8,
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.2,
-            shadowRadius: 4,
             padding: 5,
           }}
         >
@@ -31,12 +25,11 @@ const Tracks = ({ tracks }) => {
           />
           <View>
             <Text
+              numberOfLines={1}
               style={{
                 color: "white",
-                fontSize: 20,
+                fontSize: 16,
                 fontWeight: "bold",
-                width: 250,
-                paddingRight: 5,
               }}
             >
               {item?.name.length < 25
@@ -45,9 +38,8 @@ const Tracks = ({ tracks }) => {
             </Text>
             <Text
               style={{
-                color: "white",
+                color: "gray",
                 fontSize: 12,
-                fontWeight: "600",
                 width: 250,
               }}
             >
