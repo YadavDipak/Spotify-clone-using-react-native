@@ -13,17 +13,21 @@ import { useNavigation } from "@react-navigation/native";
 import ShowArtistInfo from "../components/artists/ShowArtistInfo";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { useTranslation } from "react-i18next";
+
 const ArtistsScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const artist = route.params?.artist;
 
-  if (!artist) return null; // Handle undefined artist case
+  const { t } = useTranslation();
+
+  if (!artist) return null;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
       {/* Back Button */}
-      <View style={{ position: "absolute", top: 20, left: 10, zIndex: 10 }}>
+      <View style={{ position: "absolute", top: 35, left: 10, zIndex: 10 }}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={{
@@ -38,8 +42,8 @@ const ArtistsScreen = () => {
 
       {/* Use FlatList instead of ScrollView */}
       <FlatList
-        data={[]} // Empty array since no direct list rendering
-        keyExtractor={() => "dummy"} // Avoid key warning
+        data={[]}
+        keyExtractor={() => "Random Artist"}
         ListHeaderComponent={
           <>
             <Image
@@ -51,6 +55,7 @@ const ArtistsScreen = () => {
               source={{ uri: artist.images[0]?.url }}
             />
             <Text
+              numberOfLines={1}
               style={{
                 position: "absolute",
                 color: "white",
@@ -73,7 +78,7 @@ const ArtistsScreen = () => {
                   fontWeight: "bold",
                 }}
               >
-                Followers: {artist.followers.total.toLocaleString()}
+                {t("Followers")}: {artist.followers.total.toLocaleString()}
               </Text>
 
               <Text
@@ -84,7 +89,7 @@ const ArtistsScreen = () => {
                   fontSize: 20,
                 }}
               >
-                Genres:{" "}
+                {t("Genres")}:{" "}
                 <Text style={{ fontSize: 15 }}>{artist.genres.join(", ")}</Text>
               </Text>
             </View>

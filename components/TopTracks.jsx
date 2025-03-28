@@ -1,9 +1,14 @@
-import { View, Text, FlatList, Image } from "react-native";
+import { View, Text, FlatList, Image, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import { getUsersTopItems } from "../services/user";
+import { useNavigation } from "@react-navigation/native";
+
+import { useTranslation } from "react-i18next";
 
 const TopTracks = () => {
+  const { t } = useTranslation();
   const [topTrack, setTopTracks] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchTopTrack = async () => {
@@ -32,7 +37,7 @@ const TopTracks = () => {
             fontSize: 20,
           }}
         >
-          Top Tracks
+          {t("Top Tracks")}
         </Text>
         <FlatList
           data={topTrack}
@@ -41,7 +46,8 @@ const TopTracks = () => {
           columnWrapperStyle={{ justifyContent: "space-between" }}
           renderItem={({ item }) => {
             return (
-              <View
+              <Pressable
+                onPress={() => navigation.navigate("SongInfo", { item })}
                 style={{
                   width: "45%",
                   marginBottom: 8,
@@ -52,6 +58,7 @@ const TopTracks = () => {
                   borderRadius: 8,
                   marginHorizontal: 8,
                   marginVertical: 8,
+                  padding: 8,
                 }}
               >
                 <Image
@@ -91,7 +98,7 @@ const TopTracks = () => {
                     {`${item.album.artists[0]?.name}`.slice(0, 15)}
                   </Text>
                 </View>
-              </View>
+              </Pressable>
             );
           }}
         />
