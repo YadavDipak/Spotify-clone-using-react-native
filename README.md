@@ -44,3 +44,29 @@ To integrate Spotify API into your project, ensure the following:
 6. **Security**: Never expose sensitive credentials like `CLIENT_SECRET` in the client-side code. Use a backend server to handle sensitive operations if needed.
 
 For more details, refer to the [Spotify Web API Documentation](https://developer.spotify.com/documentation/web-api/).
+
+## Environment Variables Example
+
+Below is an example of how to configure your environment variables:
+
+```env
+CLIENT_ID=your_client_id
+CLIENT_SECRET=your_client_secret
+AUTHORIZATION_ENDPOINT=https://accounts.spotify.com/authorize
+TOKEN_ENDPOINT=https://accounts.spotify.com/api/token
+BASE_URL=https://api.spotify.com/v1
+REDIRECT_URI=spotify-project://Login
+```
+
+In your code, you can access these variables as follows:
+
+```javascript
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
+const authorizationEndpoint = process.env.AUTHORIZATION_ENDPOINT;
+const tokenEndpoint = process.env.TOKEN_ENDPOINT;
+const baseUrl = process.env.BASE_URL;
+const redirectUri = process.env.REDIRECT_URI;
+```
+
+Ensure you replace `your_client_id` and `your_client_secret` with the actual values from your Spotify Developer Dashboard.
