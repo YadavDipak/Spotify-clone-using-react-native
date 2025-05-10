@@ -8,6 +8,8 @@ const {
   GET_LIKED_TRACKS,
   GET_FOLLOWED_ARTIST,
   GET_USERS_PLAYLISTS,
+  SAVE_TRACKS_FOR_USER,
+  REMOVE_TRACKS_FOR_USER,
 } = USER_ENDPOINTS;
 
 // function to get current users's profile
@@ -108,5 +110,42 @@ export async function getUsersPlaylist() {
     return response.data?.items;
   } catch (err) {
     throw new Error("Error in getting the user's playlist");
+  }
+}
+
+// function to save the track for current user
+// function to save / like a track in user's saved tracks
+export async function saveTrackForCurrentUser(trackId) {
+  try {
+    let response = await axiosRequest("PUT", SAVE_TRACKS_FOR_USER, null, null, {
+      ids: trackId,
+    });
+
+    if (response.status === 200) {
+      return true;
+    }
+  } catch (err) {
+    throw new Error("Error in saving the track in current user");
+  }
+}
+
+// function to remove the track for current user
+export async function removeTrackFromCurrentUser(trackId) {
+  try {
+    let response = await axiosRequest(
+      "DELETE",
+      REMOVE_TRACKS_FOR_USER,
+      null,
+      null,
+      {
+        ids: trackId,
+      }
+    );
+
+    if (response.status === 200) {
+      return true;
+    }
+  } catch (err) {
+    throw new Error("Error in removing the track from current user");
   }
 }

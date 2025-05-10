@@ -3,8 +3,12 @@ import React, { useEffect, useState } from "react";
 import RecentlyPlayedCard from "./RecentlyPlayedCard";
 import { getRecentlyPlayed } from "../services/user";
 
+import { useTranslation } from "react-i18next";
+
 const RecentlyPlayedSongs = () => {
   const [recentlyPlayed, setRecentlyPlayed] = useState([]);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchRecentlyPlayed = async () => {
@@ -34,7 +38,7 @@ const RecentlyPlayedSongs = () => {
           marginTop: 10,
         }}
       >
-        Recently Played
+        {t("Recently Played")}
       </Text>
       <FlatList
         data={recentlyPlayed}

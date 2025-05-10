@@ -14,17 +14,50 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.spotify-project",
+      "infoPlist": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": ["spotify-project"]
+          }
+        ],
+        "LSApplicationQueriesSchemes": ["spotify-project"]
+      },
+      "associatedDomains": [
+        "applinks:my-app-dipak.com",
+        "applinks:spotify-project.com"
+      ]
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.spotifyproject"
+      "package": "com.anonymous.spotify-project",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "https",
+              "host": "my-app-dipak.com",
+              "pathPrefix": "/song/"
+            },
+            {
+              "scheme": "spotify-project",
+              "host": "song"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-localization"
+    ]
   }
 }
