@@ -4,14 +4,18 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Entypo from "@expo/vector-icons/Entypo";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import * as Linking from "expo-linking";
 
-import HomeScreen from "./screens/HomeScreen";
-import LoginScreen from "./screens/LoginScreen";
-import ProfileScreen from "./screens/ProfileScreen";
 import {
   NavigationContainer,
   NavigationIndependentTree,
 } from "@react-navigation/native";
+
+import { useTranslation } from "react-i18next";
+
+import HomeScreen from "./screens/HomeScreen";
+import LoginScreen from "./screens/LoginScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 import SearchScreen from "./screens/SearchScreen";
 import LikedSongsScreen from "./screens/LikedSongsScreen";
 import ArtistsScreen from "./screens/ArtistsScreen";
@@ -23,6 +27,7 @@ import AlbumScreen from "./screens/AlbumScreen";
 const Tab = createBottomTabNavigator();
 
 function BottomTabs() {
+  const { t } = useTranslation();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -47,7 +52,7 @@ function BottomTabs() {
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarLabel: "Home",
+          tabBarLabel: t("Home"),
           headerShown: false,
           tabBarLabelStyle: { color: "white" },
           tabBarIcon: ({ focused }) =>
@@ -64,7 +69,7 @@ function BottomTabs() {
         name="Search"
         component={SearchScreen}
         options={{
-          tabBarLabel: "Search",
+          tabBarLabel: t("Search"),
           headerShown: false,
           tabBarLabelStyle: { color: "white" },
           tabBarIcon: ({ focused }) =>
@@ -86,7 +91,7 @@ function BottomTabs() {
         name="Library"
         component={LibraryScreen}
         options={{
-          tabBarLabel: "Your Library",
+          tabBarLabel: t("Your Library"),
           headerShown: false,
           tabBarLabelStyle: {
             color: "white",
@@ -105,7 +110,7 @@ function BottomTabs() {
         name="Profile"
         component={ProfileScreen}
         options={{
-          tabBarLabel: "Profile",
+          tabBarLabel: t("Profile"),
           headerShown: false,
           tabBarLabelStyle: { color: "white" },
           tabBarIcon: ({ focused }) =>
@@ -123,9 +128,30 @@ function BottomTabs() {
 const Stack = createNativeStackNavigator();
 
 function Navigation() {
+  const linking = {
+    prefixes: [
+      "spotify-project://",
+      Linking.createURL(""),
+      "https://spotify-web-ruby.vercel.app/app",
+    ],
+    config: {
+      screens: {
+        SongInfo: {
+          path: "SongInfo/:id",
+        },
+        Liked: {
+          path: "Liked",
+        },
+        Login: {
+          path: "Login",
+        },
+      },
+    },
+  };
+
   return (
     <NavigationIndependentTree>
-      <NavigationContainer>
+      <NavigationContainer linking={linking}>
         <Stack.Navigator>
           <Stack.Screen
             name="Login"
@@ -167,7 +193,7 @@ function Navigation() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="AlbumPage"
+            name="AlbumScreen"
             component={AlbumScreen}
             options={{ headerShown: false }}
           />
