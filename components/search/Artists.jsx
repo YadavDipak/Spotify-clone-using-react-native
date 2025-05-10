@@ -11,17 +11,11 @@ const Artists = ({ artists }) => {
           style={{
             marginBottom: 8,
             flexDirection: "row",
-            width: "100%",
             alignItems: "center",
             gap: 10,
-            marginHorizontal: 8,
             marginVertical: 8,
             borderRadius: 8,
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.2,
-            shadowRadius: 4,
-            padding: 8,
+            padding: 5,
             backgroundColor: "#1c1c1e",
           }}
         >
@@ -35,12 +29,12 @@ const Artists = ({ artists }) => {
           />
           <View>
             <Text
+              numberOfLines={1}
               style={{
                 color: "white",
-                fontSize: 22,
+                fontSize: 16,
                 paddingLeft: 8,
                 fontWeight: "bold",
-                width: 250,
               }}
             >
               {item?.name.length < 30

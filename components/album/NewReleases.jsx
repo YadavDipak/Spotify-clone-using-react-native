@@ -3,7 +3,11 @@ import React, { useEffect, useState } from "react";
 import ReleaseCard from "./ReleaseCard";
 import { getNewReleases } from "../../services/album";
 
+import { useTranslation } from "react-i18next";
+
 const NewReleases = () => {
+  const { t } = useTranslation();
+
   const [newReleases, setNewReleases] = useState([]);
 
   useEffect(() => {
@@ -31,7 +35,7 @@ const NewReleases = () => {
           marginTop: 8,
         }}
       >
-        New Releases
+        {t("New Releases")}
       </Text>
       <FlatList
         data={newReleases}
