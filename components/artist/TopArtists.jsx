@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import { getUsersTopItems } from "../../services/user";
 import ArtistCard from "./ArtistsCard";
 
+import { useTranslation } from "react-i18next";
+
 const TopArtists = () => {
+  const { t } = useTranslation();
   const [topArtists, setTopArtists] = useState([]);
 
   useEffect(() => {
@@ -36,9 +39,9 @@ const TopArtists = () => {
     }
 
     fetchTopArtists();
-  }, []);
+  }, [t]);
 
-  console.log("Top Artists-------------------------------------", topArtists);
+  // console.log("Top Artists-------------------------------------", topArtists);
 
   return (
     <>
@@ -51,7 +54,7 @@ const TopArtists = () => {
           marginTop: 10,
         }}
       >
-        Your Top Artists
+        {t("Your Top Artists")}
       </Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {topArtists.map((item, index) => (

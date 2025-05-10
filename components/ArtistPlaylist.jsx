@@ -5,8 +5,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
+import { useTranslation } from "react-i18next";
+
 const ArtistPlaylist = ({ playlists, artists, activeCategory }) => {
   const navigation = useNavigation();
+
+  const { t } = useTranslation();
   let combinedList = getCombinedList(playlists, artists, activeCategory);
 
   return (
@@ -17,8 +21,10 @@ const ArtistPlaylist = ({ playlists, artists, activeCategory }) => {
         renderItem={({ item }) => (
           <Pressable
             onPress={() => {
-              if (item.type !== "artist") {
-                navigation.navigate("PlaylistScreen");
+              if (item.type === "artist") {
+                navigation.navigate("ArtistsScreen", { artist: item });
+              } else if (item.type !== "artist") {
+                navigation.navigate("PlaylistScreen", { item: item });
               }
             }}
             style={{
@@ -27,10 +33,6 @@ const ArtistPlaylist = ({ playlists, artists, activeCategory }) => {
               alignItems: "center",
               gap: 8,
               borderRadius: 8,
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.2,
-              shadowRadius: 4,
               padding: 8,
               backgroundColor: "#202020",
             }}
@@ -39,18 +41,19 @@ const ArtistPlaylist = ({ playlists, artists, activeCategory }) => {
               style={{
                 width: 55,
                 height: 55,
-                borderRadius: item.type === "artist" ? 27.5 : 8,
+                borderRadius: item.type === "artist" ? 55 / 2 : 8,
               }}
               source={{ uri: item.images[0]?.url }}
             />
 
             <View>
               <Text
+                numberOfLines={1}
                 style={{
-                  color: "white",
-                  fontSize: 22,
+                  fontSize: 16,
                   paddingLeft: 8,
                   fontWeight: "bold",
+                  color: "white",
                   width: 250,
                 }}
               >
@@ -60,13 +63,12 @@ const ArtistPlaylist = ({ playlists, artists, activeCategory }) => {
               </Text>
               <Text
                 style={{
-                  color: "#b3b3b3",
                   fontSize: 14,
                   paddingLeft: 8,
-                  width: 250,
+                  color: "#b3b3b3",
                 }}
               >
-                {item.type[0].toUpperCase() + item.type.slice(1)}
+                {t(item.type[0].toUpperCase() + item.type.slice(1))}
               </Text>
             </View>
           </Pressable>
@@ -77,18 +79,12 @@ const ArtistPlaylist = ({ playlists, artists, activeCategory }) => {
               onPress={() => navigation.navigate("Liked")}
               style={{
                 marginBottom: 8,
-                width: "100%",
                 flexDirection: "row",
                 alignItems: "center",
                 gap: 20,
-                padding: 8,
+                padding: 5,
                 backgroundColor: "#202020",
                 borderRadius: 8,
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.2,
-                shadowRadius: 4,
-                elevation: 4,
               }}
             >
               <LinearGradient
@@ -111,9 +107,11 @@ const ArtistPlaylist = ({ playlists, artists, activeCategory }) => {
                 <Text
                   style={{ color: "white", fontSize: 14, fontWeight: "bold" }}
                 >
-                  Liked Songs
+                  {t("Liked Songs")}
                 </Text>
-                <Text style={{ color: "#B3B3B3", fontSize: 14 }}>Playlist</Text>
+                <Text style={{ color: "#B3B3B3", fontSize: 14 }}>
+                  {t("Playlist")}
+                </Text>
               </View>
             </Pressable>
           )
@@ -128,7 +126,7 @@ const ArtistPlaylist = ({ playlists, artists, activeCategory }) => {
             }}
           >
             <Text style={{ color: "white", fontSize: 24, fontWeight: "bold" }}>
-              No items found
+              {t("No items found")}
             </Text>
           </View>
         }
