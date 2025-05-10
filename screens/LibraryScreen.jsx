@@ -13,7 +13,11 @@ import CustomButton from "../components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import ArtistPlaylist from "../components/ArtistPlaylist";
 
+import { useTranslation } from "react-i18next";
+
 const LibraryScreen = () => {
+  const { t } = useTranslation();
+
   const navigation = useNavigation();
   const [userProfile, setUserProfile] = useState(null);
   const [activeCategory, setActiveCategory] = useState("All");
@@ -97,20 +101,22 @@ const LibraryScreen = () => {
               />
             </Pressable>
             <Text style={{ color: "white", fontSize: 24, fontWeight: "bold" }}>
-              Your Library
+              {t("Your Library")}
             </Text>
           </View>
 
           <View style={{ flexDirection: "row", gap: 10, marginTop: 10 }}>
-            {["All", "Artists", "Playlists"].map((category) => (
+            {["All", "Artists", "Playlists"].map((categoryKey) => (
               <CustomButton
-                key={category}
-                isActive={activeCategory === category}
-                handlePress={(cat) => setActiveCategory(cat)}
-                category={category}
+                key={categoryKey}
+                isActive={activeCategory === categoryKey}
+                handlePress={(key) => setActiveCategory(key)}
+                categoryKey={categoryKey}
+                categoryLabel={t(categoryKey)}
               />
             ))}
           </View>
+
           <View>
             <ArtistPlaylist
               artists={artists}
